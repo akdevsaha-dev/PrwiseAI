@@ -52,7 +52,7 @@ export const SetTheme = () => {
         )}
       </AnimatePresence>
 
-      <div className="w-[600px] h-96 flex flex-col items-center justify-center relative z-20">
+      <div className="w-150 h-96 flex flex-col items-center justify-center relative z-20">
         <motion.div
           className="text-3xl dark:text-white text-black transition-colors duration-300"
           initial={{ y: -20, opacity: 0 }}
@@ -70,7 +70,7 @@ export const SetTheme = () => {
           Change your theme at any time via the command menu or settings.
         </motion.div>
         <motion.div
-          className="md:w-full w-[370px] flex mt-5 rounded-md h-48 border-[1px] dark:border-neutral-800 border-neutral-200 overflow-hidden transition-colors duration-300"
+          className="md:w-full w-92.5 flex mt-5 rounded-md h-48 border dark:border-neutral-800 border-neutral-200 overflow-hidden transition-colors duration-300"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.5 }}
@@ -108,7 +108,7 @@ export const SetTheme = () => {
           onClick={handleOnClick}
           className="
           flex items-center justify-center
-    w-[300px] text-center py-3 rounded-md mt-10
+    w-75 text-center py-3 rounded-md mt-10
     text-neutral-400
     bg-neutral-200 dark:bg-neutral-900 
     lg:bg-transparent lg:dark:bg-transparent

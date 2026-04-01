@@ -3,7 +3,7 @@ import express from "express";
 import type { Response } from "express";
 import ngrok from "@ngrok/ngrok";
 import cors from "cors";
-import { toNodeHandler } from "better-auth/node";
+import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 import { auth } from "./utils/auth.js";
 const app = express();
 const port = process.env.PORT || 3000;
@@ -21,6 +21,12 @@ app.all("/api/auth/*splat", toNodeHandler(auth));
 
 app.get("/", (_, res: Response) => {
   res.send("Wow this is nice");
+});
+app.get("/api/me", async (req, res) => {
+  const session = await auth.api.getSession({
+    headers: fromNodeHeaders(req.headers),
+  });
+  return res.json(session);
 });
 
 app.listen(port, async () => {
