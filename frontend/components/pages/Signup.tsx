@@ -125,7 +125,8 @@ export const SignUp = () => {
             >
               <Image
                 src={"/images/github.png"}
-                alt="google"
+                alt="github"
+                loading="eager"
                 height={22}
                 width={22}
               />

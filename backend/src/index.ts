@@ -1,13 +1,13 @@
 import "dotenv/config";
 import express from "express";
-import type { Response } from "express";
 import ngrok from "@ngrok/ngrok";
 import cors from "cors";
 import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 import { auth } from "./utils/auth.js";
+import workspaceRoute from "./routes/workspace.route.js";
 const app = express();
 const port = process.env.PORT || 3000;
-
+app.use(express.json());
 app.use(
   cors({
     origin: "http://localhost:3001",
@@ -19,9 +19,7 @@ app.use(
 
 app.all("/api/auth/*splat", toNodeHandler(auth));
 
-app.get("/", (_, res: Response) => {
-  res.send("Wow this is nice");
-});
+app.use("/api/v1", workspaceRoute);
 app.get("/api/me", async (req, res) => {
   const session = await auth.api.getSession({
     headers: fromNodeHeaders(req.headers),

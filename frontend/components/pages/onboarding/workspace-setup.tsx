@@ -15,7 +15,7 @@ export const WorkSpaceSetup = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { data: session } = authClient.useSession();
-  const email = session?.user.email || "not logged in";
+  const email = session?.user.email || "Not Logged in";
   async function handleSubmit() {
     setLoading(true);
     setNameTouched(true);
@@ -110,6 +110,7 @@ export const WorkSpaceSetup = () => {
         </div>
         <button
           onClick={handleSubmit}
+          disabled={loading}
           className="text-white h-12 rounded-md flex items-center justify-center w-87.5 text-center bg-[#5c4cd8] mt-5 text-sm hover:bg-[#8979ff] disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? <Loader className="animate-spin" /> : "Create workspace"}
