@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 
 export default async function Page() {
   const session = await getSession();
-  if (session?.user.firstLogin) {
+  if (!session?.user.firstLogin) {
     redirect("/dashboard");
   }
   return (

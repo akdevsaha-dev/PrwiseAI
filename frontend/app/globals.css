@@ -6,6 +6,7 @@
 }
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant dark-root (.dark &);
 
 @theme inline {
   --color-background: var(--background);
@@ -14,11 +15,12 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Dark mode variables are controlled by next-themes via the .dark class on <html>.
+   Do NOT use @media (prefers-color-scheme: dark) here — it causes SSR/client
+   hydration mismatches because the server cannot read the user's system preference. */
+:root:is(.dark) {
+  --background: #0a0a0a;
+  --foreground: #ededed;
 }
 
 body {

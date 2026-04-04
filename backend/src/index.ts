@@ -5,7 +5,7 @@ import cors from "cors";
 import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 import { auth } from "./utils/auth.js";
 import workspaceRoute from "./routes/workspace.route.js";
-import registerappRoute from "./routes/registerApp.route.js";
+import registerappRoute from "./routes/registerapp.route.js";
 import repoRoute from "./routes/repo.route.js";
 import webhookRoute from "./routes/webhooks.route.js";
 import dashboardRoute from "./routes/dashboard.route.js";

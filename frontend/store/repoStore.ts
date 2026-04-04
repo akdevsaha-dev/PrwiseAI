@@ -43,7 +43,7 @@ export const useRepoStore = create<repoStore>((set) => ({
       const res = await axiosInstance.get<{
         totalRepos: number;
         repos: repo[];
-      }>(`/v1/repositories/${workspaceId}`);
+      }>(`v1/repositories/${workspaceId}`);
       set({ repos: res.data.repos, totalRepos: res.data.totalRepos });
     } catch (error) {
       console.error("Error fetching repos", error);
@@ -56,7 +56,7 @@ export const useRepoStore = create<repoStore>((set) => ({
     try {
       set({ isGettingStatus: true });
       const res = await axiosInstance.get(
-        `/v1/workspace/${workspaceId}/repo-status`,
+        `v1/workspace/${workspaceId}/repo-status`,
       );
       set({
         connected: res.data.connected,

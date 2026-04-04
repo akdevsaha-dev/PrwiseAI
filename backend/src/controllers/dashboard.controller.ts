@@ -2,26 +2,25 @@ import type { Request, Response } from "express";
 import { prisma } from "../lib/prisma.js";
 export const getDashboardMetric = async (req: Request, res: Response) => {
   try {
-    const workspaceId = req.params;
+    const { workspaceId } = req.params as { workspaceId: string };
+    console.log("Fetching metrics for workspaceId:", workspaceId);
 
     const [totalPRs, openPRs, highRiskPRs, avgRisk, lastAnalysis, prs] =
       await Promise.all([
-        await prisma.analysis.count({
+        prisma.pullRequest.count({
           where: {
-            pullRequest: {
-              workspaceId,
-            },
+            workspaceId,
           },
         }),
 
-        await prisma.pullRequest.count({
+        prisma.pullRequest.count({
           where: {
             workspaceId,
             state: "open",
           },
         }),
 
-        await prisma.analysis.count({
+        prisma.analysis.count({
           where: {
             pullRequest: {
               workspaceId,
@@ -32,7 +31,7 @@ export const getDashboardMetric = async (req: Request, res: Response) => {
           },
         }),
 
-        await prisma.analysis.aggregate({
+        prisma.analysis.aggregate({
           where: {
             pullRequest: {
               workspaceId,
@@ -43,7 +42,7 @@ export const getDashboardMetric = async (req: Request, res: Response) => {
           },
         }),
 
-        await prisma.analysis.findFirst({
+        prisma.analysis.findFirst({
           where: {
             pullRequest: {
               workspaceId,
@@ -54,7 +53,7 @@ export const getDashboardMetric = async (req: Request, res: Response) => {
           },
         }),
 
-        await prisma.pullRequest.findMany({
+        prisma.pullRequest.findMany({
           where: {
             workspaceId,
           },
@@ -78,7 +77,7 @@ export const getDashboardMetric = async (req: Request, res: Response) => {
         openPRs,
         highRiskPRs,
         avgRiskScore: avgRisk._avg.bugRiskScore,
-        lastAnalysis,
+        lastAnalysis: lastAnalysis?.createdAt,
       },
       prs,
     });

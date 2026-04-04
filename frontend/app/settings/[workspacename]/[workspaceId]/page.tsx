@@ -1,5 +1,5 @@
-import { Dashboard } from "@/components/Dashboard";
 import { LoggedNav } from "@/components/LoggedNavbar";
+import { Settings } from "@/components/pages/Settings";
 import { SideBar } from "@/components/Sidebar";
 import { getSession } from "@/getSession";
 import { redirect } from "next/navigation";
@@ -22,7 +22,7 @@ export default async function Page({
       <div className="flex flex-col w-full">
         <LoggedNav />
         <div className="flex-1 overflow-y-auto">
-          <Dashboard workspaceId={workspaceId} />
+          <Settings workspaceId={workspaceId} workspaceName={workspacename} />
         </div>
       </div>
     </div>

@@ -48,7 +48,7 @@ export const Welcome = () => {
           transition={{ delay: 0.6, duration: 0.6 }}
           className="text-center text-neutral-400 w-87.5 md:w-112.5 mt-6"
         >
-          Automate your code reviews with PRWise. Get intelligent insights on
+          Automate your code reviews with PRwise. Get intelligent insights on
           pull requests and actionable suggestions.
         </motion.div>
         <motion.div

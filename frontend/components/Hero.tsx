@@ -163,7 +163,7 @@ export function Hero() {
           Experience the Future of Developer Experience
         </div>
         <div className="flex justify-center text-xl text-center mt-10">
-          Get started and see how ReviewAI helps you process your code in a
+          Get started and see how PRwise helps you process your code in a
           fraction of the time.
         </div>
         <div className="flex items-center justify-center">

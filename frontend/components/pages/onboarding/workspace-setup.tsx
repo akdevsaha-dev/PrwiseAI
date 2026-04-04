@@ -14,8 +14,8 @@ export const WorkSpaceSetup = () => {
   const [urlTouched, setUrlTouched] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { data: session } = authClient.useSession();
-  const email = session?.user.email || "Not Logged in";
+  const { data: session, isPending } = authClient.useSession();
+  const email = isPending ? "" : session?.user.email ?? "";
   async function handleSubmit() {
     setLoading(true);
     setNameTouched(true);
@@ -61,7 +61,7 @@ export const WorkSpaceSetup = () => {
         </button>
         <div className="px-3 rounded-md py-2 hover:text-white text-neutral-500 hover:bg-neutral-400 dark:hover:bg-neutral-900">
           <div>Logged in as</div>
-          <div className="text-xs font-semibold dark:text-white text-neutral-700">
+          <div className="text-xs font-semibold dark:text-white text-neutral-700" suppressHydrationWarning>
             {email}
           </div>
         </div>

@@ -19,12 +19,12 @@ export const useUserStore = create<userStore>((set) => ({
   fetchUser: async () => {
     set({ isGettingUser: true });
     try {
-      const res = axiosInstance.get<{ user: User | null }>("/me");
+      const res = axiosInstance.get<{ user: User | null }>("me");
       set({ user: (await res).data.user, isGettingUser: false });
     } catch (error) {
       console.error("Failed to fetch user", error);
     } finally {
-      set({ user: null, isGettingUser: false });
+      set({ isGettingUser: false });
     }
   },
 }));
