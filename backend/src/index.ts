@@ -13,10 +13,12 @@ import { prisma } from "./lib/prisma.js";
 
 const app = express();
 const port = process.env.PORT || 3000;
+const frontendUrl = process.env.FRONTEND_URL || "http://localhost:3001";
+
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:3001",
+    origin: frontendUrl,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
     credentials: true,
@@ -63,15 +65,17 @@ app.get("/api/me", async (req, res) => {
 app.listen(port, async () => {
   console.log(`Server running on http://localhost:${port}`);
 
-  try {
-    const listener = await ngrok.connect({
-      addr: port,
-      authtoken: process.env.NGROK_AUTHTOKEN,
-      domain: "ghoul-ready-moccasin.ngrok-free.app",
-    });
+  if (process.env.NODE_ENV !== "production" && process.env.NGROK_AUTHTOKEN) {
+    try {
+      const listener = await ngrok.connect({
+        addr: port,
+        authtoken: process.env.NGROK_AUTHTOKEN,
+        domain: process.env.NGROK_DOMAIN || "ghoul-ready-moccasin.ngrok-free.app",
+      });
 
-    console.log(`Ingress established at: ${listener.url()}`);
-  } catch (err) {
-    console.error("Ngrok failed:", err);
+      console.log(`Ingress established at: ${listener.url()}`);
+    } catch (err) {
+      console.error("Ngrok failed:", err);
+    }
   }
 });
