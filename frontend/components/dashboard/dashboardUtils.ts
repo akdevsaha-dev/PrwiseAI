@@ -6,7 +6,9 @@ export function getRiskColor(score: number) {
 }
 
 export function getStatusColor(status: string) {
-  if (status === "Open") return "bg-green-500/20 text-green-400";
-  if (status === "Merged") return "bg-purple-500/20 text-purple-400";
-  return "bg-gray-500/20 text-gray-400";
+  const s = status.toLowerCase();
+  if (s === "open") return "bg-green-500/20 text-green-400 border-green-500/30";
+  if (s === "merged") return "bg-purple-500/20 text-purple-400 border-purple-500/30";
+  if (s === "closed") return "bg-red-500/20 text-red-400 border-red-500/30";
+  return "bg-gray-500/20 text-gray-400 border-gray-500/30";
 }

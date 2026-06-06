@@ -1,5 +1,5 @@
 "use client";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Bug, FileText, Sparkles } from "lucide-react";
 import Image from "next/image";
 import { motion } from "motion/react";
 import { authClient } from "../lib/auth-client";
@@ -113,97 +113,168 @@ export function Hero() {
           </div>
         </div>
       </div>
-      <div className="min-h-screen mt-10 md:mt-50 bg-neutral-950 ">
+      <div className="min-h-screen py-24 md:py-32 bg-neutral-950 relative overflow-hidden">
+        {/* Subtle background glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-neutral-800/20 rounded-full blur-[120px] pointer-events-none" />
+
         <motion.div
-          initial={{ opacity: 0 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{
             opacity: 1,
-            transition: { delay: 0.2, duration: 0.5 },
+            y: 0,
+            transition: { delay: 0.2, duration: 0.8, ease: "easeOut" },
           }}
-          className="flex flex-col items-center"
+          viewport={{ once: true }}
+          className="relative z-10 max-w-7xl mx-auto px-6 flex flex-col items-center"
         >
-          <div className="opacity-40 text-lg md:text-xl">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-neutral-800 bg-neutral-900/50 text-neutral-400 text-sm mb-8">
+            <span className="w-2 h-2 rounded-full bg-neutral-500 animate-pulse" />
             Designed for power users who value time
           </div>
-          <div className="mt-10 text-4xl md:text-6xl font-semibold text-white">
+
+          <h2 className="text-4xl md:text-7xl font-bold text-white text-center tracking-tight mb-4">
             Speed Is Everything
-          </div>
-          <div className="text-4xl md:text-6xl font-semibold mt-1 text-neutral-500">
-            Review in seconds
-          </div>
-          <div className="px-10 mt-10">
-            <div className="min-h-80 max-w-150 bg-neutral-900 rounded-2xl py-10 text-left text-neutral-400 font-semibold  flex items-center justify-center px-8">
-              Prwise is a developer-focused collaboration platform designed to
-              transform how code reviews happen in modern teams. Instead of
-              relying solely on human reviewers who may be busy or unavailable,
-              Prwise automatically analyzes pull requests and provides
-              intelligent feedback on code quality, structure, and potential
-              improvements. It helps developers identify bugs earlier, maintain
-              consistent coding standards, and learn better practices directly
-              within their workflow. By integrating seamlessly with existing
-              repositories and development pipelines, Prwise acts as a smart
-              assistant that reviews changes, suggests refinements, and
-              accelerates the entire development cycle. Whether you are an
-              individual developer working on personal projects or a team
-              maintaining large production systems, Prwise helps ensure that
-              every pull request is clearer, cleaner, and ready for production
-              faster.
+          </h2>
+          <p className="text-3xl md:text-5xl font-medium text-neutral-500 text-center mb-16">
+            Review in seconds, not hours.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mt-10">
+            <div className="space-y-8">
+              <div className="p-1 bg-neutral-900/50 border border-neutral-800 rounded-2xl">
+                <div className="p-8 space-y-4">
+                  <h3 className="text-2xl font-semibold text-white">The Smart Assistant Your PR Needs</h3>
+                  <p className="text-neutral-400 leading-relaxed text-lg">
+                    Prwise transforms how code reviews happen. Instead of waiting for human availability, get instant, intelligent feedback on every change.
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {[
+                  { title: "Identify Bugs", desc: "Catch issues before they hit production." },
+                  { title: "Maintain Standards", desc: "Consistent quality across your team." },
+                  { title: "Learn Faster", desc: "Best practices suggested in-situ." },
+                  { title: "Seamless Sync", desc: "Works with your existing workflow." }
+                ].map((item, i) => (
+                  <div key={i} className="p-4 border border-neutral-800/50 rounded-xl bg-neutral-900/30">
+                    <div className="font-medium text-white mb-1">{item.title}</div>
+                    <div className="text-sm text-neutral-500">{item.desc}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="relative">
+               <div className="absolute -inset-4 bg-gradient-to-tr from-neutral-800/20 to-transparent rounded-3xl blur-2xl" />
+               <div className="relative bg-neutral-900 border border-neutral-800 rounded-2xl overflow-hidden shadow-2xl">
+                 <div className="flex items-center gap-2 px-4 py-3 border-b border-neutral-800 bg-neutral-950/50">
+                    <div className="flex gap-1.5">
+                      <div className="w-3 h-3 rounded-full bg-neutral-800" />
+                      <div className="w-3 h-3 rounded-full bg-neutral-800" />
+                      <div className="w-3 h-3 rounded-full bg-neutral-800" />
+                    </div>
+                    <div className="text-xs text-neutral-500 font-mono">pr-analysis.json</div>
+                 </div>
+                 <div className="p-6 font-mono text-sm">
+                    <div className="flex gap-4">
+                      <span className="text-neutral-600">01</span>
+                      <span className="text-blue-400">{"{"}</span>
+                    </div>
+                    <div className="flex gap-4">
+                      <span className="text-neutral-600">02</span>
+                      <span className="ml-4 text-neutral-300">"risk_score": <span className="text-yellow-500">0.12</span>,</span>
+                    </div>
+                    <div className="flex gap-4">
+                      <span className="text-neutral-600">03</span>
+                      <span className="ml-4 text-neutral-300">"summary": <span className="text-green-400">"Clean refactor of auth logic"</span>,</span>
+                    </div>
+                    <div className="flex gap-4">
+                      <span className="text-neutral-600">04</span>
+                      <span className="ml-4 text-neutral-300">"suggestions": [</span>
+                    </div>
+                    <div className="flex gap-4">
+                      <span className="text-neutral-600">05</span>
+                      <span className="ml-8 text-neutral-300">"Use optional chaining in line 42"</span>
+                    </div>
+                    <div className="flex gap-4">
+                      <span className="text-neutral-600">06</span>
+                      <span className="ml-4 text-neutral-300">]</span>
+                    </div>
+                    <div className="flex gap-4">
+                      <span className="text-neutral-600">07</span>
+                      <span className="text-blue-400">{"}"}</span>
+                    </div>
+                 </div>
+               </div>
             </div>
           </div>
         </motion.div>
       </div>
-      <div className="min-h-[150vh] w-full bg-black relative">
+
+      <div className="min-h-screen py-24 bg-black relative overflow-hidden">
         <div
-          className="absolute inset-0 z-0"
+          className="absolute inset-0 z-0 pointer-events-none"
           style={{
             backgroundImage: `
-          radial-gradient(circle at 50% 100%, rgba(58, 175, 169, 0.6) 0%, transparent 60%),
-          radial-gradient(circle at 50% 100%, rgba(255, 140, 0, 0.4) 0%, transparent 70%),
-          radial-gradient(circle at 50% 100%, rgba(238, 130, 238, 0.3) 0%, transparent 80%)
-        `,
+              radial-gradient(circle at 50% 100%, rgba(34, 34, 34, 0.4) 0%, transparent 50%),
+              radial-gradient(circle at 0% 0%, rgba(20, 20, 20, 0.3) 0%, transparent 40%)
+            `,
           }}
         />
-        <div className="flex text-8xl text-neutral-400 text-center font-bold mt-40 items-center justify-center mask-[linear-gradient(to_bottom,black_20%,transparent)]">
-          Experience the Future of Developer Experience
-        </div>
-        <div className="mt-44 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto px-6">
-          <div className="bg-neutral-900/60 backdrop-blur border border-neutral-800 rounded-2xl p-8 hover:border-neutral-600 transition">
-            <div className="text-xl font-semibold text-white mb-3">
-              Instant PR Summaries
-            </div>
-            <div className="text-neutral-400 text-sm leading-relaxed">
-              Every pull request is automatically summarized so you instantly
-              understand what changed without reading hundreds of lines of code.
-            </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-6">
+          <div className="text-center mb-24">
+            <h2 className="text-5xl md:text-8xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-neutral-200 to-neutral-500 mb-8 leading-tight">
+              Experience the Future of DevX
+            </h2>
           </div>
 
-          <div className="bg-neutral-900/60 backdrop-blur border border-neutral-800 rounded-2xl p-8 hover:border-neutral-600 transition">
-            <div className="text-xl font-semibold text-white mb-3">
-              Bug Risk Detection
-            </div>
-            <div className="text-neutral-400 text-sm leading-relaxed">
-              AI highlights potential risks, suspicious patterns, and fragile
-              code so your team can catch issues before they reach production.
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                title: "Instant PR Summaries",
+                desc: "Every pull request is automatically summarized so you instantly understand what changed without reading hundreds of lines of code.",
+                icon: <FileText className="w-5 h-5" />
+              },
+              {
+                title: "Bug Risk Detection",
+                desc: "AI highlights potential risks, suspicious patterns, and fragile code so your team can catch issues before they reach production.",
+                icon: <Bug className="w-5 h-5" />
+              },
+              {
+                title: "Smarter Code Reviews",
+                desc: "Get actionable suggestions that improve readability, structure, and maintainability across your entire codebase.",
+                icon: <Sparkles className="w-5 h-5" />
+              }
+            ].map((feature, i) => (
+              <div key={i} className="group p-8 rounded-2xl border border-neutral-800 bg-neutral-900/40 backdrop-blur-sm hover:border-neutral-700 transition-all duration-300">
+                <div className="w-10 h-10 rounded-lg bg-neutral-900 border border-neutral-800 flex items-center justify-center text-neutral-400 mb-4 group-hover:text-white group-hover:bg-neutral-800 transition-all">
+                  {feature.icon}
+                </div>
+                <h3 className="text-xl font-semibold text-white mb-3 group-hover:translate-x-1 transition-transform">{feature.title}</h3>
+                <p className="text-neutral-400 text-sm leading-relaxed">{feature.desc}</p>
+              </div>
+            ))}
           </div>
 
-          <div className="bg-neutral-900/60 backdrop-blur border border-neutral-800 rounded-2xl p-8 hover:border-neutral-600 transition">
-            <div className="text-xl font-semibold text-white mb-3">
-              Smarter Code Reviews
+          <div className="mt-40 text-center relative">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-full w-full max-w-lg h-px bg-gradient-to-r from-transparent via-neutral-800 to-transparent" />
+            <h3 className="text-2xl md:text-3xl font-medium text-neutral-200 mb-6">
+              Ready to ship better code?
+            </h3>
+            <p className="text-neutral-500 mb-10 max-w-md mx-auto">
+              Join teams already using PRwise to accelerate their development cycle and maintain high quality.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <button onClick={handleClick} className="w-full sm:w-auto px-8 h-12 bg-white text-black font-semibold rounded-full hover:bg-neutral-200 transition-colors flex items-center justify-center gap-2 group">
+                Get Started
+                <ArrowUpRight size={18} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </button>
+              <button className="w-full sm:w-auto px-8 h-12 bg-neutral-900 text-white border border-neutral-800 font-semibold rounded-full hover:bg-neutral-800 transition-colors">
+                View Documentation
+              </button>
             </div>
-            <div className="text-neutral-400 text-sm leading-relaxed">
-              Get actionable suggestions that improve readability, structure,
-              and maintainability across your entire codebase.
-            </div>
-          </div>
-        </div>
-        <div className="flex justify-center text-xl text-center mt-20 text-neutral-900">
-          Get started and see how PRwise helps you process your code in a
-          fraction of the time.
-        </div>
-        <div className="flex items-center justify-center">
-          <div className=" w-32 mt-20 bg-white text-center h-12 flex items-center justify-center text-black font-semibold rounded-xl">
-            Get Started
           </div>
         </div>
       </div>
