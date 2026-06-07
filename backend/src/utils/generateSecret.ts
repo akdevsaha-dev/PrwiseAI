@@ -1,13 +1,22 @@
 import jwt from "jsonwebtoken";
 import fs from "fs";
+
 export const generateSecret = () => {
-  const privateKeyPath = process.env.GITHUB_APP_PRIVATE_KEY_PATH;
-  if (!privateKeyPath) {
-    throw new Error(
-      "GITHUB_APP_PRIVATE_KEY_PATH is not defined in environment variables",
-    );
+  let privateKey = process.env.GITHUB_APP_PRIVATE_KEY;
+  
+  if (!privateKey) {
+    const privateKeyPath = process.env.GITHUB_APP_PRIVATE_KEY_PATH;
+    if (!privateKeyPath) {
+      throw new Error(
+        "Neither GITHUB_APP_PRIVATE_KEY nor GITHUB_APP_PRIVATE_KEY_PATH is defined in environment variables",
+      );
+    }
+    privateKey = fs.readFileSync(privateKeyPath, "utf8");
+  } else {
+    // Replace literal '\n' sequences with actual newlines if configured via env
+    privateKey = privateKey.replace(/\\n/g, "\n");
   }
-  const privateKey = fs.readFileSync(privateKeyPath, "utf8");
+
   const now = Math.floor(Date.now() / 1000);
 
   return jwt.sign(
