@@ -13,7 +13,7 @@ import { prisma } from "./lib/prisma.js";
 import { globalLimiter } from "./middleware/rateLimiter.js";
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = Number(process.env.PORT) || 3000;
 const frontendUrl = process.env.FRONTEND_URL || "http://localhost:3001";
 
 app.use(globalLimiter);
@@ -61,19 +61,20 @@ app.get("/api/me", async (req, res) => {
   });
 });
 
-app.listen(port, async () => {
-  console.log(`Server running on http://localhost:${port}`);
+const isProd = process.env.NODE_ENV === "production";
 
-  if (process.env.NODE_ENV !== "production" && process.env.NGROK_AUTHTOKEN) {
+app.listen(port, "0.0.0.0", async () => {
+  console.log(`Server running on port ${port}`);
+
+  if (!isProd && process.env.NGROK_AUTHTOKEN) {
     try {
       const listener = await ngrok.connect({
         addr: port,
         authtoken: process.env.NGROK_AUTHTOKEN,
-        domain:
-          process.env.NGROK_DOMAIN || "ghoul-ready-moccasin.ngrok-free.app",
+        domain: process.env.NGROK_DOMAIN,
       });
 
-      console.log(`Ingress established at: ${listener.url()}`);
+      console.log(`Ngrok URL: ${listener.url()}`);
     } catch (err) {
       console.error("Ngrok failed:", err);
     }
