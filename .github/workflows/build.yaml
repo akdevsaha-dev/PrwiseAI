@@ -39,10 +39,14 @@ jobs:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
-      - name: Set up Google Cloud
+      - name: Setup gcloud
         uses: google-github-actions/setup-gcloud@v2
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Set project explicitly
+        run: |
+          gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
 
       - name: Configure Docker
         run: |
@@ -57,9 +61,10 @@ jobs:
 
       - name: Build Docker Image
         run: |
+          cd backend
           docker build \
             -t asia-south1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/backend/prwise:${{ github.sha }} \
-            ./backend
+            .
 
       - name: Push Docker Image
         run: |
