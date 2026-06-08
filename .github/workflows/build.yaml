@@ -33,6 +33,9 @@ jobs:
           cd backend
           pnpm install
 
+      # -------------------------
+      # GCP AUTH (OIDC)
+      # -------------------------
       - name: Authenticate to GCP (OIDC)
         uses: google-github-actions/auth@v2
         with:
@@ -44,14 +47,39 @@ jobs:
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-      - name: Set project explicitly
+      - name: Force project context
         run: |
           gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
 
+      # -------------------------
+      # DEBUG: Identity check
+      # -------------------------
+      - name: Debug - Auth identity
+        run: |
+          gcloud auth list
+
+      # -------------------------
+      # DEBUG: Project check
+      # -------------------------
+      - name: Debug - Project config
+        run: |
+          gcloud config list
+
+      # -------------------------
+      # DOCKER AUTH
+      # -------------------------
       - name: Configure Docker
         run: |
+          rm -rf ~/.docker/config.json || true
           gcloud auth configure-docker asia-south1-docker.pkg.dev --quiet
 
+      - name: Debug Docker config
+        run: |
+          cat ~/.docker/config.json || true
+
+      # -------------------------
+      # PRISMA MIGRATIONS
+      # -------------------------
       - name: Run Prisma migrations
         run: |
           cd backend
@@ -59,6 +87,9 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
+      # -------------------------
+      # BUILD IMAGE
+      # -------------------------
       - name: Build Docker Image
         run: |
           cd backend
@@ -66,11 +97,17 @@ jobs:
             -t asia-south1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/backend/prwise:${{ github.sha }} \
             .
 
+      # -------------------------
+      # PUSH IMAGE (FAILURE POINT)
+      # -------------------------
       - name: Push Docker Image
         run: |
           docker push \
             asia-south1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/backend/prwise:${{ github.sha }}
 
+      # -------------------------
+      # DEPLOY
+      # -------------------------
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy prwise \
