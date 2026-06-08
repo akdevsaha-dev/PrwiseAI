@@ -34,7 +34,7 @@ jobs:
           pnpm install
 
       # -------------------------
-      # GCP AUTH (OIDC)
+      # GCP AUTH
       # -------------------------
       - name: Authenticate to GCP (OIDC)
         uses: google-github-actions/auth@v2
@@ -47,35 +47,38 @@ jobs:
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-      - name: Force project context
+      - name: Set project explicitly
         run: |
           gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
 
       # -------------------------
-      # DEBUG: Identity check
+      # FIX: Docker credential store conflict
       # -------------------------
-      - name: Debug - Auth identity
+      - name: Fix Docker auth (IMPORTANT)
         run: |
-          gcloud auth list
+          mkdir -p ~/.docker
+          cat > ~/.docker/config.json <<EOF
+          {
+            "credHelpers": {
+              "asia-south1-docker.pkg.dev": "gcloud"
+            }
+          }
+          EOF
 
-      # -------------------------
-      # DEBUG: Project check
-      # -------------------------
-      - name: Debug - Project config
+      - name: Configure Docker with gcloud
         run: |
-          gcloud config list
-
-      # -------------------------
-      # DOCKER AUTH
-      # -------------------------
-      - name: Configure Docker
-        run: |
-          rm -rf ~/.docker/config.json || true
           gcloud auth configure-docker asia-south1-docker.pkg.dev --quiet
 
-      - name: Debug Docker config
+      # -------------------------
+      # DEBUG (safe to keep)
+      # -------------------------
+      - name: Debug identity
         run: |
-          cat ~/.docker/config.json || true
+          gcloud auth list
+          gcloud config list
+
+      - name: Debug docker config
+        run: cat ~/.docker/config.json
 
       # -------------------------
       # PRISMA MIGRATIONS
@@ -88,7 +91,7 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       # -------------------------
-      # BUILD IMAGE
+      # BUILD
       # -------------------------
       - name: Build Docker Image
         run: |
@@ -98,7 +101,7 @@ jobs:
             .
 
       # -------------------------
-      # PUSH IMAGE (FAILURE POINT)
+      # PUSH
       # -------------------------
       - name: Push Docker Image
         run: |
