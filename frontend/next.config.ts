@@ -13,6 +13,14 @@ const nextConfig: NextConfig = {
         source: "/api/github/:path*",
         destination: `${backendUrl}/api/github/:path*`,
       },
+      {
+        source: "/api/v1/:path*",
+        destination: `${backendUrl}/api/v1/:path*`,
+      },
+      {
+        source: "/api/me",
+        destination: `${backendUrl}/api/me`,
+      },
     ];
   },
   images: {
