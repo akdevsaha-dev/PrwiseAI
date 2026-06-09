@@ -4,8 +4,13 @@ import { Session } from "./types";
 export async function getSession(): Promise<Session | null> {
   try {
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000";
+    const reqHeaders = await headers();
+    const cookie = reqHeaders.get("cookie") || "";
+
     const res = await fetch(`${backendUrl}/api/me`, {
-      headers: await headers(),
+      headers: {
+        cookie: cookie,
+      },
       cache: "no-store",
     });
 
