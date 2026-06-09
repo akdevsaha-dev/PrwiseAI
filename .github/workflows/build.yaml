@@ -82,12 +82,11 @@ jobs:
           docker push \
             asia-south1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/backend/prwise:${{ github.sha }}
 
-      
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy prwise \
             --image asia-south1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/backend/prwise:${{ github.sha }} \
             --region asia-south1 \
-            --set-env-vars FRONTEND_URL=${{ secrets.FRONTEND_URL }} \
+            --update-env-vars FRONTEND_URL=${{ secrets.FRONTEND_URL }} \
             --allow-unauthenticated \
             --quiet
