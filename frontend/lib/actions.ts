@@ -1,5 +1,6 @@
 import axios from "axios";
 import { authClient } from "./auth-client";
+import { axiosInstance } from "../utils/instance";
 
 interface handleWorkspaceSetupProp {
   workSpace_name: string;
@@ -7,16 +8,18 @@ interface handleWorkspaceSetupProp {
 }
 
 export const handleGithubAuth = async () => {
+  const origin = typeof window !== "undefined" ? window.location.origin : "http://localhost:3001";
   await authClient.signIn.social({
     provider: "github",
-    callbackURL: "http://localhost:3001/onboarding/welcome",
+    callbackURL: `${origin}/onboarding/welcome`,
   });
 };
 
 export const handleGoogleAuth = async () => {
+  const origin = typeof window !== "undefined" ? window.location.origin : "http://localhost:3001";
   await authClient.signIn.social({
     provider: "google",
-    callbackURL: "http://localhost:3001/onboarding/welcome",
+    callbackURL: `${origin}/onboarding/welcome`,
   });
 };
 
@@ -25,15 +28,12 @@ export const handleWorkspaceSetup = async ({
   workSpace_Url,
 }: handleWorkspaceSetupProp) => {
   try {
-    const res = await axios.post(
-      "http://localhost:3000/api/v1/onboarding/workspace-setup",
+    const res = await axiosInstance.post(
+      "/v1/onboarding/workspace-setup",
       {
         workSpace_name,
         workSpace_Url,
-      },
-      {
-        withCredentials: true,
-      },
+      }
     );
 
     return res.data;
@@ -52,12 +52,9 @@ export const handleWorkspaceSetup = async ({
 
 export const handleOnboardingComplete = async () => {
   try {
-    const res = await axios.post(
-      "http://localhost:3000/api/v1/onboarding/complete",
-      {},
-      {
-        withCredentials: true,
-      },
+    const res = await axiosInstance.post(
+      "/v1/onboarding/complete",
+      {}
     );
 
     return res.data;
